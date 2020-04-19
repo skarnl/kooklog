@@ -4,7 +4,7 @@
       <v-card max-width="600" class="mx-auto">
         <v-list two-line subheader>
           <v-list-item
-            v-for="entry in entries"
+            v-for="entry in sortedEntries"
             :key="entry.title"
             @click="clickHandler"
           >
@@ -13,8 +13,10 @@
             </v-list-item-avatar>
 
             <v-list-item-content>
-              <v-list-item-title v-text="entry.title"></v-list-item-title>
-              <v-list-item-subtitle v-text="entry.date"></v-list-item-subtitle>
+              <v-list-item-title v-text="entry.name"></v-list-item-title>
+              <v-list-item-subtitle
+                v-text="formatDate(entry.date)"
+              ></v-list-item-subtitle>
             </v-list-item-content>
 
             <v-list-item-action>
@@ -30,16 +32,24 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'List',
+  computed: mapGetters('logs', ['sortedEntries']),
   methods: {
+    formatDate(date) {
+      return new Date(date).toLocaleString('nl-NL', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      });
+    },
     clickHandler() {
       // eslint-disable-next-line no-console
-      console.log('click op item')
-    }
+      console.log('click op item');
+    },
   },
-  computed: mapGetters(['allEntries'])
-}
+};
 </script>

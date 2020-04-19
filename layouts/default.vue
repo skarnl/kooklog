@@ -7,7 +7,6 @@
     <v-content>
       <v-container fluid>
         <nuxt />
-
         <EntryModal />
       </v-container>
     </v-content>
@@ -16,8 +15,8 @@
 </template>
 
 <script>
-import BottomNavigation from '../components/BottomNavigation'
-import EntryModal from '../components/EntryModal'
+import BottomNavigation from '../components/BottomNavigation';
+import EntryModal from '../components/EntryModal';
 
 export default {
   components: { EntryModal, BottomNavigation },
@@ -28,16 +27,16 @@ export default {
         {
           icon: 'mdi-apps',
           title: 'Welcome',
-          to: '/'
+          to: '/',
         },
         {
           icon: 'mdi-chart-bubble',
           title: 'List',
-          to: '/list'
-        }
+          to: '/list',
+        },
       ],
-      title: 'Kooklog'
-    }
-  }
-}
+      title: 'Kooklog',
+    };
+  },
+};
 </script>

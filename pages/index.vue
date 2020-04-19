@@ -21,7 +21,7 @@
                 <v-btn color="primary" @click.stop="openAddDialog">
                   Nieuwe log
                 </v-btn>
-                <v-btn color="primary">
+                <v-btn color="primary" to="/list">
                   Naar lijst
                 </v-btn>
               </v-card-actions>
@@ -34,14 +34,14 @@
 </template>
 
 <script>
-import { eventBus } from '../eventBus'
+import { eventBus } from '../eventBus';
 
 export default {
-  name: 'index',
+  name: 'Index',
   methods: {
     openAddDialog() {
-      eventBus.$emit('openDialog')
-    }
-  }
-}
+      eventBus.$emit('openDialog');
+    },
+  },
+};
 </script>
