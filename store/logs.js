@@ -1,4 +1,5 @@
 export const state = () => ({
+  lastMutationDate: '',
   entries: [
     {
       name: 'Rijst met kipkerrie',
@@ -35,11 +36,26 @@ export const mutations = {
     state.list.splice(state.entries.indexOf(entry), 1);
   },
   SET_ENTRIES(state, entries) {
-    state.entries = { ...entries };
+    state.entries = [...entries];
   },
 };
 
 export const actions = {
+  async fetchInitialStore({ commit }) {
+    console.log('commit : ', commit);
+
+    console.log('nuxtServerInit');
+    //
+    const { data } = await this.$axios.get('http://swapi.dev/api/starships/');
+    const entries = data.results.map(result => ({
+      name: result.name,
+      date: Date.parse(result.created),
+    }));
+
+    console.log('entries : ', entries);
+
+    commit('SET_ENTRIES', entries);
+  },
   addEntry({ commit }, { name, date }) {
     commit('ADD_ENTRY', {
       name,
