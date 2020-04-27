@@ -1,3 +1,5 @@
+import { uploadStore } from '../api/updateRemoteStore';
+
 const ADD_ENTRY = 'ADD_ENTRY';
 const DELETE_ENTRY = 'DELETE_ENTRY';
 const SET_ENTRIES = 'SET_ENTRIES';
@@ -32,11 +34,15 @@ export const actions = {
     commit(SET_ENTRIES, data.entries);
     commit(SET_LAST_MUTATION_DATE, data.lastMutationDate);
   },
-  addEntry({ commit }, { name, date }) {
+  async addEntry({ commit, state }, { name, date }) {
     commit(ADD_ENTRY, {
       name,
       date: Date.parse(date),
     });
+
+    const result = await uploadStore(state);
+
+    console.log('result : ', result);
   },
   // deleteEntry()
 };

@@ -23,6 +23,7 @@
   "dependencies": {
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
+    "aws-sdk": "^2.664.0",
     "axios": "^0.19.2",
     "nuxt": "^2.0.0"
   },
