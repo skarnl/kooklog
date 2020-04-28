@@ -14,7 +14,6 @@
                     v-model="accessKey"
                     label="Access key"
                     required
-                    full-width
                   ></v-text-field>
                 </v-col>
                 <v-col cols="12">
@@ -22,7 +21,6 @@
                     v-model="secretKey"
                     label="Secret key"
                     required
-                    full-width
                   ></v-text-field>
                 </v-col>
               </v-form>
