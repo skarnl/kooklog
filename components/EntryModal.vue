@@ -9,27 +9,24 @@
           <v-container>
             <v-row>
               <v-form ref="entryform" lazy-validation>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12">
                   <v-text-field
                     v-model="entry.name"
-                    label="Naam*"
+                    label="Naam van gerecht"
                     required
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12" sm="6" md="4">
+                <v-col cols="12">
                   <v-menu
                     v-model="datepicker"
                     :close-on-content-click="false"
-                    :nudge-right="40"
                     transition="scale-transition"
                     offset-y
-                    min-width="290px"
                   >
                     <template v-slot:activator="{ on }">
                       <v-text-field
                         v-model="entry.date"
-                        label="Picker without buttons"
-                        prepend-icon="mdi-cross"
+                        label="Datum"
                         readonly
                         v-on="on"
                       ></v-text-field>
@@ -43,13 +40,10 @@
               </v-form>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false"
-            >Close</v-btn
-          >
+          <v-btn color="blue darken-1" text @click="closeHandler">Close</v-btn>
           <v-btn color="blue darken-1" text @click="saveHandler">Save</v-btn>
         </v-card-actions>
       </v-card>
@@ -78,6 +72,9 @@ export default {
   methods: {
     saveHandler() {
       this.$store.dispatch('logs/addEntry', { ...this.entry });
+      this.closeHandler();
+    },
+    closeHandler() {
       this.dialog = false;
       this.clearForm();
     },

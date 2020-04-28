@@ -13,7 +13,7 @@ export const uploadStore = async data => {
   });
 
   const request = {
-    Bucket: 'xxxrakso-kooklog-store',
+    Bucket: 'rakso-kooklog-store',
     Key: 'kooklog-store.json',
     Body: JSON.stringify(data),
     ContentType: 'application/json; charset=utf-8',
