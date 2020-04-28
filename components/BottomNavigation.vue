@@ -10,11 +10,6 @@
       <v-icon>mdi-format-list-bulleted</v-icon>
     </v-btn>
 
-    <v-btn value="favorites" to="/favorites">
-      <span>Favorieten</span>
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
-
     <v-btn value="add" color="green" @click.stop="openAddEntryDialog">
       <span>Toevoegen</span>
       <v-icon>mdi-plus</v-icon>
