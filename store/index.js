@@ -7,7 +7,8 @@
  */
 
 export const actions = {
-  async nuxtServerInit({ commit, dispatch }) {
+  async nuxtClientInit({ commit, dispatch }) {
     await dispatch('logs/fetchInitialStore', { commit });
+    dispatch('aws/fetchInitialStore', { commit });
   },
 };

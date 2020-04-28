@@ -8,6 +8,7 @@
       <v-container fluid>
         <nuxt />
         <EntryModal />
+        <AuthModal :show-dialog="!showAuthModule" />
       </v-container>
     </v-content>
     <BottomNavigation />
@@ -15,28 +16,23 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 import BottomNavigation from '../components/BottomNavigation';
 import EntryModal from '../components/EntryModal';
+import AuthModal from '../components/AuthModal';
 
 export default {
-  components: { EntryModal, BottomNavigation },
+  components: { EntryModal, BottomNavigation, AuthModal },
   data() {
     return {
-      drawer: false,
-      items: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/',
-        },
-        {
-          icon: 'mdi-chart-bubble',
-          title: 'List',
-          to: '/list',
-        },
-      ],
       title: 'Kooklog',
     };
+  },
+  computed: {
+    ...mapGetters({
+      showAuthModule: 'aws/isAuthenticated',
+    }),
   },
 };
 </script>

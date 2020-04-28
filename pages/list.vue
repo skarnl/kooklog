@@ -36,7 +36,9 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'List',
-  computed: mapGetters('logs', ['sortedEntries']),
+  computed: {
+    ...mapGetters('logs', ['sortedEntries']),
+  },
   methods: {
     formatDate(date) {
       return new Date(date).toLocaleString('nl-NL', {
