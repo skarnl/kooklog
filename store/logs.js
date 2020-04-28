@@ -4,10 +4,15 @@ const ADD_ENTRY = 'ADD_ENTRY';
 const DELETE_ENTRY = 'DELETE_ENTRY';
 const SET_ENTRIES = 'SET_ENTRIES';
 const SET_LAST_MUTATION_DATE = 'SET_LAST_MUTATION_DATE';
+const LOADING = 'LOADING';
+const SET_ERROR = 'SET_ERROR';
 
 export const state = () => ({
   lastMutationDate: '',
   entries: [],
+  loading: false,
+  error: false,
+  errorMessage: '',
 });
 
 export const mutations = {
@@ -23,6 +28,13 @@ export const mutations = {
   [SET_LAST_MUTATION_DATE](state, lastMutationDate) {
     state.lastMutationDate = lastMutationDate;
   },
+  [LOADING](state, loading) {
+    state.loading = loading;
+  },
+  [SET_ERROR](state, errorMessage) {
+    state.error = true;
+    state.errorMessage = errorMessage;
+  },
 };
 
 export const actions = {
@@ -35,14 +47,23 @@ export const actions = {
     commit(SET_LAST_MUTATION_DATE, data.lastMutationDate);
   },
   async addEntry({ commit, state }, { name, date }) {
-    commit(ADD_ENTRY, {
-      name,
-      date: Date.parse(date),
-    });
+    commit(LOADING, true);
 
-    const result = await uploadStore(state);
+    try {
+      const result = await uploadStore(state);
+      console.log('result : ', result);
 
-    console.log('result : ', result);
+      commit(ADD_ENTRY, {
+        name,
+        date: Date.parse(date),
+      });
+    } catch (e) {
+      console.error(e);
+
+      commit(SET_ERROR, e.message);
+    } finally {
+      commit(LOADING, false);
+    }
   },
   // deleteEntry()
 };
