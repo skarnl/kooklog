@@ -1,13 +1,10 @@
 import AWS from 'aws-sdk';
 
-const _ACCESS_KEY_ID = '';
-const _SECRET_ACCESS_KEY = '';
-
 // eslint-disable-next-line require-await
-export const uploadStore = async data => {
+export const uploadStore = async (data, { accessKey, secretKey }) => {
   const client = new AWS.S3({
-    accessKeyId: _ACCESS_KEY_ID,
-    secretAccessKey: _SECRET_ACCESS_KEY,
+    accessKeyId: accessKey,
+    secretAccessKey: secretKey,
     apiVersion: '2006-03-01',
     region: 'eu-west-2',
   });

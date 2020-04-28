@@ -46,17 +46,32 @@ export const actions = {
     commit(SET_ENTRIES, data.entries);
     commit(SET_LAST_MUTATION_DATE, data.lastMutationDate);
   },
-  async addEntry({ commit, state }, { name, date }) {
+  async addEntry({ commit, state, rootState }, { name, date }) {
     commit(LOADING, true);
 
-    try {
-      const result = await uploadStore(state);
-      console.log('result : ', result);
+    const awsStore = rootState.aws;
 
-      commit(ADD_ENTRY, {
-        name,
-        date: Date.parse(date),
-      });
+    if (!awsStore.accessKey || !awsStore.secretKey) {
+      return;
+    }
+
+    const newEntry = {
+      name,
+      date: Date.parse(date),
+    };
+
+    try {
+      await uploadStore(
+        {
+          entries: [...state.entries, newEntry],
+          lastMutationDate: Date.now(),
+        },
+        {
+          accessKey: awsStore.accessKey,
+          secretKey: awsStore.secretKey,
+        },
+      );
+      commit(ADD_ENTRY, newEntry);
     } catch (e) {
       console.error(e);
 
