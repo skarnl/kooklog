@@ -2,7 +2,7 @@
   <v-app dark>
     <v-app-bar app dense flat short tile>
       <v-spacer />
-      <span class="overline">v1.0.0-alpha.1</span>
+      <span class="overline">v1.0.0-beta.1</span>
     </v-app-bar>
     <v-content>
       <v-container fluid>
