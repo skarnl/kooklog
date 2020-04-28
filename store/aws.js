@@ -20,8 +20,6 @@ export const mutations = {
 export const actions = {
   fetchInitialStore({ commit }) {
     if (process.client) {
-      window.localStorage.clear();
-
       const localAccessKey = window.localStorage.getItem(LOCAL_ACCESS_KEY);
       const localSecretKey = window.localStorage.getItem(LOCAL_SECRET_KEY);
 
