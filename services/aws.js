@@ -35,11 +35,13 @@ export const createApi = ({ store }) => ({
         CacheControl: 'max-age=60',
       };
 
-      await this.getClient()
-        .putObject(params)
-        .promise();
+      if (this.getClient()) {
+        await this.getClient()
+          .putObject(params)
+          .promise();
 
-      return data;
+        return data;
+      }
     } catch (e) {
       throw new Error(`Could not upload file to S3: ${e.message}`);
     }
@@ -52,11 +54,13 @@ export const createApi = ({ store }) => ({
         Key: BUCKET_OBJECT_KEY,
       };
 
-      const data = await this.getClient()
-        .getObject(params)
-        .promise();
+      if (this.getClient()) {
+        const data = await this.getClient()
+          .getObject(params)
+          .promise();
 
-      return JSON.parse(data.Body.toString());
+        return JSON.parse(data.Body.toString());
+      }
     } catch (e) {
       throw new Error(`Could not retrieve file from S3: ${e.message}`);
     }
