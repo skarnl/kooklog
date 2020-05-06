@@ -1,18 +1,19 @@
 <template>
-  <v-bottom-navigation app fixed shift grow color="primary">
-    <v-btn value="home" to="/">
-      <span>Over</span>
-      <v-icon>mdi-information-outline</v-icon>
+  <v-bottom-navigation app fixed grow color="primary">
+    <v-btn value="home" to="/week">
+      <v-icon>mdi-playlist-edit</v-icon>
     </v-btn>
 
     <v-btn value="recent" to="/list">
-      <span>Lijst</span>
-      <v-icon>mdi-format-list-bulleted</v-icon>
+      <v-icon>mdi-filter-variant</v-icon>
     </v-btn>
 
-    <v-btn value="add" color="green" @click.stop="openAddEntryDialog">
-      <span>Toevoegen</span>
-      <v-icon>mdi-plus</v-icon>
+    <v-btn value="favorites">
+      <v-icon>mdi-heart</v-icon>
+    </v-btn>
+
+    <v-btn value="search">
+      <v-icon>mdi-magnify</v-icon>
     </v-btn>
   </v-bottom-navigation>
 </template>

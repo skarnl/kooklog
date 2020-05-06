@@ -1,37 +1,47 @@
 <template>
-  <v-row>
-    <v-col cols="12" sm="12" md="6">
-      <v-card max-width="600" class="mx-auto">
-        <template v-if="sortedEntries.length">
-          <v-list two-line subheader>
-            <v-list-item
-              v-for="entry in sortedEntries"
-              :key="entry.title"
-              @click="clickHandler"
-            >
-              <v-list-item-avatar>
-                <v-icon :class="[entry.iconClass]" v-text="entry.icon" />
-              </v-list-item-avatar>
+  <v-row justify="center">
+    <v-col cols="12" md="8">
+      <v-list-item-group
+        v-if="sortedEntries.length"
+        v-model="sortedEntries"
+        multiple
+        active-class="pink--text"
+      >
+        <template v-for="item in sortedEntries">
+          <v-list-item :key="item.id">
+            <v-list-item-content>
+              <v-list-item-title v-text="item.name" />
+            </v-list-item-content>
 
-              <v-list-item-content>
-                <v-list-item-title v-text="entry.name" />
-                <v-list-item-subtitle v-text="formatDate(entry.date)" />
-              </v-list-item-content>
+            <v-list-item-action>
+              <v-list-item-action-text
+                v-text="formatDate(item.date)"
+              ></v-list-item-action-text>
 
-              <v-list-item-action>
-                <v-btn icon>
-                  <v-icon color="grey lighten-1">mdi-information</v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list>
+              <!--            IF FAVORITE (HARTJE)
+
+                <v-icon v-if="!active" color="grey lighten-1">-->
+              <!--                  star_border-->
+              <!--                </v-icon>-->
+
+              <!--                <v-icon v-else color="yellow">-->
+              <!--                  star-->
+              <!--                </v-icon>-->
+            </v-list-item-action>
+          </v-list-item>
+
+          <v-divider
+            v-if="index + 1 < sortedEntries.length"
+            :key="item.id"
+          ></v-divider>
         </template>
-        <v-list-item v-else>
-          <v-list-item-content>
-            <v-list-item-title>Nog niks in de lijst</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-card>
+      </v-list-item-group>
+
+      <v-list-item v-else>
+        <v-list-item-content>
+          <v-list-item-title>Nog niks in de lijst</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-col>
   </v-row>
 </template>
