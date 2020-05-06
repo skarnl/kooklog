@@ -1,3 +1,7 @@
+/**
+ * Store for storing the AWS credentials in the localStorage
+ */
+
 const SET_ACCESS_KEY = 'SET_ACCESS_KEY';
 const SET_SECRET_KEY = 'SET_SECRET_KEY';
 const LOCAL_ACCESS_KEY = 'local_access_key';
@@ -18,10 +22,14 @@ export const mutations = {
 };
 
 export const actions = {
-  fetchInitialStore({ commit }) {
+  async fetchInitialStore({ commit }) {
     if (process.client) {
-      const localAccessKey = window.localStorage.getItem(LOCAL_ACCESS_KEY);
-      const localSecretKey = window.localStorage.getItem(LOCAL_SECRET_KEY);
+      const localAccessKey = await window.localStorage.getItem(
+        LOCAL_ACCESS_KEY,
+      );
+      const localSecretKey = await window.localStorage.getItem(
+        LOCAL_SECRET_KEY,
+      );
 
       if (localAccessKey) {
         commit(SET_ACCESS_KEY, localAccessKey);

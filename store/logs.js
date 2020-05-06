@@ -1,4 +1,4 @@
-import { uploadStore } from '../api/updateRemoteStore';
+// import { uploadStore } from '../api/updateRemoteStore';
 
 const ADD_ENTRY = 'ADD_ENTRY';
 const DELETE_ENTRY = 'DELETE_ENTRY';
@@ -38,13 +38,13 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchInitialStore({ commit }) {
-    const { data } = await this.$axios.get(
-      'https://rakso-kooklog-store.s3.eu-west-2.amazonaws.com/kooklog-store.json',
-    );
+  async fetchInitialStore({ commit }, { app }) {
+    const data = await app.$aws.fetch();
 
-    commit(SET_ENTRIES, data.entries);
-    commit(SET_LAST_MUTATION_DATE, data.lastMutationDate);
+    if (data && data.entries) {
+      commit(SET_ENTRIES, data.entries);
+      commit(SET_LAST_MUTATION_DATE, data.lastMutationDate);
+    }
   },
   async addEntry({ commit, state, rootState }, { name, date }) {
     commit(LOADING, true);
@@ -57,7 +57,7 @@ export const actions = {
 
     const newEntry = {
       name,
-      date: Date.parse(date),
+      date,
     };
 
     try {
