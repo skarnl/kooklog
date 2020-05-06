@@ -49,7 +49,7 @@ export const actions = {
       const newStore = await this.$aws.sync({
         id: Date.now(),
         name,
-        date,
+        date: Date.parse(date),
       });
 
       commit(SET_ENTRIES, newStore.entries);
