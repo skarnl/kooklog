@@ -1,5 +1,3 @@
-// import { uploadStore } from '../api/updateRemoteStore';
-
 const DELETE_ENTRY = 'DELETE_ENTRY';
 const SET_ENTRIES = 'SET_ENTRIES';
 const SET_LAST_MUTATION_DATE = 'SET_LAST_MUTATION_DATE';
