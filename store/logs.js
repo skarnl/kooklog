@@ -1,6 +1,5 @@
 // import { uploadStore } from '../api/updateRemoteStore';
 
-const ADD_ENTRY = 'ADD_ENTRY';
 const DELETE_ENTRY = 'DELETE_ENTRY';
 const SET_ENTRIES = 'SET_ENTRIES';
 const SET_LAST_MUTATION_DATE = 'SET_LAST_MUTATION_DATE';
@@ -16,9 +15,6 @@ export const state = () => ({
 });
 
 export const mutations = {
-  [ADD_ENTRY](state, entry) {
-    state.entries.push(entry);
-  },
   [DELETE_ENTRY](state, { entry }) {
     state.list.splice(state.entries.indexOf(entry), 1);
   },
@@ -46,32 +42,18 @@ export const actions = {
       commit(SET_LAST_MUTATION_DATE, data.lastMutationDate);
     }
   },
-  async addEntry({ commit, state, rootState }, { name, date }) {
+  async addEntry({ commit, state }, { name, date }) {
     commit(LOADING, true);
 
-    const awsStore = rootState.aws;
-
-    if (!awsStore.accessKey || !awsStore.secretKey) {
-      return;
-    }
-
-    const newEntry = {
-      name,
-      date,
-    };
-
     try {
-      await uploadStore(
-        {
-          entries: [...state.entries, newEntry],
-          lastMutationDate: Date.now(),
-        },
-        {
-          accessKey: awsStore.accessKey,
-          secretKey: awsStore.secretKey,
-        },
-      );
-      commit(ADD_ENTRY, newEntry);
+      const newStore = await this.$aws.sync({
+        id: Date.now(),
+        name,
+        date,
+      });
+
+      commit(SET_ENTRIES, newStore.entries);
+      commit(SET_LAST_MUTATION_DATE, newStore.lastMutationDate);
     } catch (e) {
       console.error(e);
 
