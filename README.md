@@ -1,6 +1,12 @@
-# kooklog
+# Kooklog
 
-> Log het avondeten
+> Track what we had for diner
+
+## Techniques used
+- NuxtJS
+- Vuetify
+- AWS S3
+- my own brain
 
 ## Build Setup
 
