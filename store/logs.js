@@ -63,6 +63,23 @@ export const actions = {
   // deleteEntry()
 };
 
+const formatDate = date =>
+  new Date(date).toLocaleString('nl-NL', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
 export const getters = {
-  sortedEntries: state => state.entries.slice().sort((a, b) => b.date - a.date),
+  formattedEntries: state =>
+    state.entries.map(entry => ({
+      ...entry,
+      formattedDate: formatDate(entry.date),
+    })),
+
+  sortedEntries: (state, getters) =>
+    getters.formattedEntries.slice().sort((a, b) => b.date - a.date),
+
+  lastWeekEntries: (state, getters) => getters.sortedEntries.slice(0, 10),
 };
