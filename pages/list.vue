@@ -1,12 +1,7 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" md="8">
-      <v-list-item-group
-        v-if="sortedEntries.length"
-        v-model="sortedEntries"
-        multiple
-        active-class="pink--text"
-      >
+      <template v-if="sortedEntries.length">
         <template v-for="item in sortedEntries">
           <v-list-item :key="item.id">
             <v-list-item-content>
@@ -15,7 +10,7 @@
 
             <v-list-item-action>
               <v-list-item-action-text
-                v-text="formatDate(item.date)"
+                v-text="item.formattedDate"
               ></v-list-item-action-text>
 
               <!--            IF FAVORITE (HARTJE)
@@ -35,7 +30,7 @@
             :key="item.id"
           ></v-divider>
         </template>
-      </v-list-item-group>
+      </template>
 
       <v-list-item v-else>
         <v-list-item-content>
@@ -55,14 +50,6 @@ export default {
     ...mapGetters('logs', ['sortedEntries']),
   },
   methods: {
-    formatDate(date) {
-      return new Date(date).toLocaleString('nl-NL', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    },
     clickHandler() {
       // eslint-disable-next-line no-console
       console.log('click op item');
