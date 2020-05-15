@@ -5,7 +5,7 @@
         <template v-for="item in sortedEntries">
           <v-list-item :key="item.id">
             <v-list-item-content>
-              <v-list-item-title v-text="item.name" />
+              <v-list-item-title v-text="item.displayName" />
             </v-list-item-content>
 
             <v-list-item-action>
@@ -48,12 +48,6 @@ export default {
   name: 'List',
   computed: {
     ...mapGetters('logs', ['sortedEntries']),
-  },
-  methods: {
-    clickHandler() {
-      // eslint-disable-next-line no-console
-      console.log('click op item');
-    },
   },
 };
 </script>

@@ -61,4 +61,8 @@ export const mutations = {
 
 export const actions = {};
 
-export const getters = {};
+export const getters = {
+  getDishById: state => dishId =>
+    // TODO: if performance is an issue, replace this with for-loop ^^
+    state.dishes.find(entry => entry.id === dishId),
+};

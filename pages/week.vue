@@ -1,10 +1,6 @@
 <template>
   <v-row justify="center">
     <v-col cols="12" md="8">
-      <!-- day after tomorrow -->
-      <!-- tomorrow -->
-      <!-- today -->
-
       <template v-for="(item, index) in weekEntries">
         <v-list-item :key="index">
           <v-row>
@@ -20,15 +16,14 @@
               }}</span>
             </v-col>
 
-            <v-col cols="10">
-              <template v-if="item.entry">
-                {{ item.entry.name }}<br />
-                ( {{ item.entry.date }} )
-              </template>
-
-              <template v-else>
-                KLIK OM IETS IN TE VULLEN
-              </template>
+            <v-col
+              cols="10"
+              class="dish"
+              :class="{
+                'dish--empty': !item.entry,
+              }"
+            >
+              <WeekEntry :entry="item.entry" :day="item.day" />
             </v-col>
           </v-row>
         </v-list-item>
@@ -36,6 +31,7 @@
         <v-divider
           v-if="index + 1 < weekEntries.length"
           :key="item.id"
+          inset
         ></v-divider>
       </template>
     </v-col>
@@ -44,31 +40,25 @@
 
 <script>
 import { DateTime } from 'luxon';
+import WeekEntry from '../components/WeekEntry';
 
 export default {
-  name: 'List',
+  name: 'Week',
+  components: { WeekEntry },
   data: () => ({
     today: DateTime.local(),
   }),
-  methods: {
-    formatDay(day) {
-      return day
-        .setLocale('nl-nl')
-        .toLocaleString({ weekday: 'short' })
-        .toUpperCase();
-    },
-  },
   computed: {
     weekEntries() {
-      console.log('this.today : ', this.today.toString());
-
       const dayAfterTomorrow = this.today.plus({ day: 2 });
       const latestEntries = this.$store.getters['logs/lastWeekEntries'];
+
       const latestEntriesMappedByDate = latestEntries.reduce(
         (totalObj, entry) =>
           totalObj.set(DateTime.fromMillis(entry.date).toISODate(), entry),
         new Map(),
       );
+
       const entries = [];
 
       for (let i = 0; i < 9; i++) {
@@ -86,6 +76,14 @@ export default {
       }
 
       return entries;
+    },
+  },
+  methods: {
+    formatDay(day) {
+      return day
+        .setLocale('nl-nl')
+        .toLocaleString({ weekday: 'short' })
+        .toUpperCase();
     },
   },
 };
@@ -107,5 +105,9 @@ export default {
     color: var(--v-primary-base);
     opacity: 1;
   }
+}
+
+.dish--empty {
+  opacity: 0.3;
 }
 </style>

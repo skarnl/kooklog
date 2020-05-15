@@ -72,9 +72,10 @@ const formatDate = date =>
   });
 
 export const getters = {
-  formattedEntries: state =>
+  formattedEntries: (state, getters, rootState, rootGetters) =>
     state.entries.map(entry => ({
       ...entry,
+      displayName: rootGetters['dishes/getDishById'](entry.dishId).name,
       formattedDate: formatDate(entry.date),
     })),
 
