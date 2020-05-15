@@ -1,3 +1,6 @@
+import { DateTime } from 'luxon';
+import { fixedStartDishes } from './dishes';
+
 const DELETE_ENTRY = 'DELETE_ENTRY';
 const SET_ENTRIES = 'SET_ENTRIES';
 const SET_LAST_MUTATION_DATE = 'SET_LAST_MUTATION_DATE';
@@ -31,9 +34,37 @@ export const mutations = {
   },
 };
 
+/**
+ * FILL THE LOGS WITH FAKE ENTRIES (for easier testing)
+ */
+
+const getRandomDish = () =>
+  fixedStartDishes[Math.floor(Math.random() * fixedStartDishes.length)];
+
+const fakeEntries = [];
+
+const createFakeEntry = day => {
+  return {
+    id: Date.now() + Math.random() * 10000,
+    dishId: getRandomDish().id,
+    date: day.toMillis(),
+  };
+};
+
+const today = DateTime.local();
+for (let i = 0; i < 100; i++) {
+  fakeEntries.push(createFakeEntry(today.minus({ day: i })));
+}
+
+/**
+ * END OF FAKE FILLING THE LOGS
+ */
+
 export const actions = {
+  // eslint-disable-next-line require-await
   async fetchInitialStore({ commit }, { app }) {
-    const data = await app.$aws.fetch();
+    // const data = await app.$aws.fetch();
+    const data = { entries: [...fakeEntries], lastMutationDate: Date.now() };
 
     if (data && data.entries) {
       commit(SET_ENTRIES, data.entries);
