@@ -54,7 +54,7 @@ export const actions = {
 
       dispatch('setEntries', entries);
 
-      await Promise.all([this.$aws.upload(), wait(3000)]);
+      await Promise.all([this.$aws.upload(), wait(900)]);
     } catch (error) {
       console.error(error);
     } finally {
