@@ -31,7 +31,7 @@ export const actions = {
       let dishToAdd = dish;
 
       if (typeof dish === 'string') {
-        dishToAdd = dispatch(
+        dishToAdd = await dispatch(
           'cookbook/addDish',
           { dishName: dish },
           { root: true },
