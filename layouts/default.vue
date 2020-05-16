@@ -7,7 +7,15 @@
     <v-content>
       <v-container fluid>
         <nuxt />
-        <EntryModal />
+        <v-overlay :value="loading">
+          <div class="text-center">
+            <v-progress-circular
+              indeterminate
+              color="primary"
+            ></v-progress-circular>
+            <br />{{ 'Aan het opslaan...' }}
+          </div>
+        </v-overlay>
         <AuthModal :show-dialog="!showAuthModule" />
       </v-container>
     </v-content>
@@ -16,20 +24,22 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 
 import BottomNavigation from '../components/BottomNavigation';
-import EntryModal from '../components/EntryModal';
 import AuthModal from '../components/AuthModal';
 
 export default {
-  components: { EntryModal, BottomNavigation, AuthModal },
+  components: { BottomNavigation, AuthModal },
   data() {
     return {
       title: 'Kooklog',
     };
   },
   computed: {
+    ...mapState('app', {
+      loading: state => state.loading,
+    }),
     ...mapGetters({
       showAuthModule: 'aws/isAuthenticated',
     }),
