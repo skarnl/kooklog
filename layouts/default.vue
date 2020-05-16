@@ -7,13 +7,14 @@
     <v-content>
       <v-container fluid>
         <nuxt />
-        <v-overlay :value="loading">
+        <v-overlay :value="loading" color="#bdbdbd">
           <div class="text-center">
             <v-progress-circular
               indeterminate
               color="primary"
+              size="48"
+              width="6"
             ></v-progress-circular>
-            <br />{{ 'Aan het opslaan...' }}
           </div>
         </v-overlay>
         <AuthModal :show-dialog="!isAuthenticated" />
