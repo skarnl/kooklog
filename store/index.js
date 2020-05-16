@@ -9,19 +9,10 @@
 export const actions = {
   async nuxtClientInit({ commit, dispatch }, { app }) {
     await dispatch('aws/fetchInitialStore');
-    // await this.fetchInitialStore({ commit, dispatch }, { app });
+    // await dispatch('fetchInitialStore', { app });
   },
 
-  async fetchInitialStore({ commit, dispatch }, { app }) {
-    const data = await app.$aws.fetch();
-
-    if (data) {
-      if (data.entries) {
-        dispatch('logs/setEntries', data.entries);
-      }
-      if (data.dishes) {
-        dispatch('cookbook/setDishes', data.dishes);
-      }
-    }
+  async fetchInitialStore(_, { app }) {
+    await app.$aws.sync();
   },
 };
