@@ -9,7 +9,7 @@
 export const actions = {
   async nuxtClientInit({ commit, dispatch }, { app }) {
     await dispatch('aws/fetchInitialStore');
-    // await dispatch('fetchInitialStore', { app });
+    await dispatch('fetchInitialStore', { app });
   },
 
   async fetchInitialStore(_, { app }) {
