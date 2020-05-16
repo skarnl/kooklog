@@ -47,12 +47,12 @@ export const actions = {
       let entries = [...state.entries];
 
       if (existingEntryIndex !== -1) {
-        entries = entries.splice(existingEntryIndex, 1, newEntry);
+        entries[existingEntryIndex] = newEntry;
       } else {
         entries = [...entries, newEntry];
       }
 
-      dispatch('logs/setEntries', entries);
+      dispatch('setEntries', entries);
 
       await Promise.all([this.$aws.upload(), wait(3000)]);
     } catch (error) {
