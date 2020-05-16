@@ -23,69 +23,68 @@ export const createApi = ({ store }) => ({
     return this.client;
   },
 
-  async upload(data) {
-    data.lastMutationDate = Date.now();
+  async upload() {
+    if (!this.getClient()) {
+      return;
+    }
+
+    const newRemoteStore = {
+      logs: {
+        entries: store.state.logs.entries,
+      },
+      cookbook: {
+        dishes: store.state.cookbook.dishes,
+        tags: store.state.cookbook.tags,
+      },
+    };
+
+    // for logging purposes
+    newRemoteStore.lastMutationDate = Date.now();
 
     try {
       const params = {
         Bucket: BUCKET_NAME,
         Key: BUCKET_OBJECT_KEY,
-        Body: JSON.stringify(data),
+        Body: JSON.stringify(newRemoteStore),
         ContentType: 'application/json; charset=utf-8',
         CacheControl: 'max-age=60',
       };
 
-      if (this.getClient()) {
-        await this.getClient()
-          .putObject(params)
-          .promise();
-
-        return data;
-      }
+      await this.getClient()
+        .putObject(params)
+        .promise();
     } catch (e) {
       throw new Error(`Could not upload file to S3: ${e.message}`);
     }
   },
 
   async fetch() {
+    if (!this.getClient()) {
+      return;
+    }
+
     try {
       const params = {
         Bucket: BUCKET_NAME,
         Key: BUCKET_OBJECT_KEY,
       };
 
-      if (this.getClient()) {
-        const data = await this.getClient()
-          .getObject(params)
-          .promise();
+      const data = await this.getClient()
+        .getObject(params)
+        .promise();
 
-        return JSON.parse(data.Body.toString());
-      }
+      return JSON.parse(data.Body.toString());
     } catch (e) {
       throw new Error(`Could not retrieve file from S3: ${e.message}`);
     }
   },
 
-  // sync is misschien niet beste benaming voor deze actie
-  // delete zal moeten gebeuren met een sync, waarbij de desbetreffende id wordt verwijderd
-  async sync(newEntry) {
+  async sync() {
     const remoteStore = await this.fetch();
-    const localStore = store.state.logs;
-    let entries = localStore.entries;
 
-    if (remoteStore.lastMutationDate >= localStore.lastMutationDate) {
-      console.log('!!! WE NEED TO MERGE');
-
-      entries = remoteStore.entries;
-
-      // merge moet iets slimmer gebeuren dan dit
-      // moeten door alles heenlopen en niet gevonden ids toevoegen
-      // dus dan kunnen we gewoon heel de store gebruiken ipv de entry doorgeven
-      // maar moeten dan wel de nieuwe state weer fetchen daarna - of moeten we dat altijd gewoon doen?
+    if (remoteStore) {
+      store.dispatch('logs/setEntries', remoteStore.logs.entries);
+      store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes);
     }
-
-    return await this.upload({
-      entries: [...entries, newEntry],
-    });
   },
 });
