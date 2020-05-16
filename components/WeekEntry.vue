@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-combobox
-      v-model="model"
+      v-model="selectedDish"
       item-text="name"
       item-value="id"
       :items="items"
@@ -24,30 +24,33 @@ export default {
     },
     day: {
       type: DateTime,
-      default: null,
+      required: true,
     },
   },
-  data() {
-    return {
-      model: null,
-    };
-  },
+  data: () => ({
+    selectedDish: null,
+  }),
   computed: {
     ...mapState('cookbook', {
       items: state => state.dishes,
     }),
   },
+  watch: {
+    selectedDish() {
+      console.log('this.selectedDish changed : ', this.selectedDish);
+
+      // this.$store.dispatch('logs/addEntry', {
+      //   dish: this.selectedDish,
+      //   date: this.day,
+      // });
+    },
+  },
   created() {
     if (this.entry) {
-      this.model = {
+      this.selectedDish = {
         ...this.items.find(dish => dish.id === this.entry.dishId),
       };
     }
-  },
-  watch: {
-    model() {
-      console.log('this.model changed : ', this.model);
-    },
   },
 };
 </script>
