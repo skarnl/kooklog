@@ -29,9 +29,17 @@ export default {
       required: true,
     },
   },
-  data: () => ({
-    selectedDish: null,
-  }),
+  data() {
+    return {
+      selectedDish: this.entry
+        ? {
+            ...this.$store.state.cookbook.dishes.find(
+              dish => dish.id === this.entry.dishId,
+            ),
+          }
+        : null,
+    };
+  },
   computed: {
     ...mapState('cookbook', {
       items: state => state.dishes,
@@ -46,13 +54,6 @@ export default {
       //   date: this.day,
       // });
     },
-  },
-  created() {
-    if (this.entry) {
-      this.selectedDish = {
-        ...this.items.find(dish => dish.id === this.entry.dishId),
-      };
-    }
   },
 };
 </script>
