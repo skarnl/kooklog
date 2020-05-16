@@ -11,7 +11,7 @@ export const mutations = {
 };
 
 export const actions = {
-  loading({ commit }, { loading }) {
+  loading({ commit }, loading) {
     commit(LOADING, { loading });
   },
 };
