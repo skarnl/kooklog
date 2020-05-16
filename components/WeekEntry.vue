@@ -7,6 +7,8 @@
       :items="items"
       placeholder="Klik om iets in te voeren"
       hide-no-data
+      flat
+      solo
     ></v-combobox>
   </div>
 </template>
