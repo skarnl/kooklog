@@ -9,7 +9,7 @@ export const TAG_PROTEIN__FISH = 'tag_protein__fish';
 export const TAG_PROTEIN__VEGI = 'tag_protein__vegi';
 
 const SET_DISHES = 'SET_DISHES';
-const ADD_DISH = 'ADD_DISHES';
+const ADD_DISH = 'ADD_DISH';
 
 export const state = () => ({
   dishes: [],
