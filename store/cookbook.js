@@ -1,4 +1,5 @@
 import * as R from 'ramda';
+import { getFakeDishes } from '../helpers/fake-data';
 
 export const TAG_KIND__PASTA = 'tag_kind__pasta';
 export const TAG_KIND__RICE = 'tag_kind__rice';
@@ -8,74 +9,11 @@ export const TAG_PROTEIN__MEAT = 'tag_protein__meat';
 export const TAG_PROTEIN__FISH = 'tag_protein__fish';
 export const TAG_PROTEIN__VEGI = 'tag_protein__vegi';
 
-let idIndex = 0;
-
-const addIdToEntry = entry => ({
-  ...entry,
-  id: idIndex++,
-});
-
-export const fixedStartDishes = R.map(addIdToEntry, [
-  {
-    name: 'Pannenkoeken met spek',
-    tags: [],
-  },
-  {
-    name: 'Brocolli',
-    tags: [TAG_KIND__POTATO, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Lasagna',
-    tags: [TAG_KIND__PASTA, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Patat met frietsaus',
-    tags: [TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Poffertjes',
-    tags: [],
-  },
-  {
-    name: 'Kipkerrie met rijst',
-    tags: [TAG_KIND__RICE, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Aubergine-rolletjes',
-    tags: [TAG_KIND__RICE, TAG_PROTEIN__VEGI],
-  },
-  {
-    name: 'Parpadelle met chipolata-worstjes',
-    tags: [TAG_KIND__PASTA, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Paprikasoep',
-    tags: [TAG_PROTEIN__VEGI],
-  },
-  {
-    name: 'Ovenpatat met snacks',
-    tags: [TAG_KIND__POTATO, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Zelfgemaakte pizza',
-    tags: [TAG_KIND__PASTA, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Pizza (afhaal)',
-    tags: [TAG_KIND__PASTA, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: 'Aardappels met bloemkool',
-    tags: [TAG_KIND__POTATO, TAG_PROTEIN__MEAT],
-  },
-  {
-    name: "Taco's",
-    tags: [TAG_PROTEIN__MEAT],
-  },
-]);
+const SET_DISHES = 'set_dishes';
+const ADD_DISH = 'add_dish';
 
 export const state = () => ({
-  dishes: [...fixedStartDishes],
+  dishes: [...getFakeDishes()],
   tags: {
     kind: [
       {
@@ -109,11 +47,28 @@ export const state = () => ({
 });
 
 export const mutations = {
-  addDish(state, { dish }) {},
-  // removeDish
+  [SET_DISHES](state, dishes) {
+    state.dishes = [...dishes];
+  },
+  [ADD_DISH](state, newDish) {
+    state.dishes = [...state.dishes, newDish];
+  },
 };
 
-export const actions = {};
+export const actions = {
+  setDishes({ commit, state }, dishes) {
+    commit(SET_DISHES, dishes);
+  },
+
+  addDish({ commit, state, dispatch }, { dishName }) {
+    const id = R.last(state.dishes).id + 1;
+    const dish = { id, name: dishName };
+
+    commit(ADD_DISH, dish);
+
+    return dish;
+  },
+};
 
 export const getters = {
   getDishById: state => dishId =>

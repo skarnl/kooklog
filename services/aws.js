@@ -1,4 +1,5 @@
 import AWS from 'aws-sdk';
+import { DateTime } from 'luxon';
 
 const BUCKET_NAME = 'rakso-kooklog-store';
 const BUCKET_OBJECT_KEY = 'kooklog-store.json';
@@ -34,12 +35,11 @@ export const createApi = ({ store }) => ({
       },
       cookbook: {
         dishes: store.state.cookbook.dishes,
-        tags: store.state.cookbook.tags,
       },
     };
 
     // for logging purposes
-    newRemoteStore.lastMutationDate = Date.now();
+    newRemoteStore.lastMutationDate = DateTime.local().toISO();
 
     try {
       const params = {
@@ -79,12 +79,17 @@ export const createApi = ({ store }) => ({
     }
   },
 
+  /**
+   * Update the local store with the latest remote store state
+   *
+   * @returns {Promise<void>}
+   */
   async sync() {
     const remoteStore = await this.fetch();
 
     if (remoteStore) {
-      store.dispatch('logs/setEntries', remoteStore.logs.entries);
-      store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes);
+        store.dispatch('logs/setEntries', remoteStore.logs.entries);
+        store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes);
     }
   },
 });

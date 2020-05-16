@@ -54,8 +54,7 @@ export default {
       const latestEntries = this.$store.getters['logs/lastWeekEntries'];
 
       const latestEntriesMappedByDate = latestEntries.reduce(
-        (totalObj, entry) =>
-          totalObj.set(DateTime.fromMillis(entry.date).toISODate(), entry),
+        (totalObj, entry) => totalObj.set(entry.date, entry),
         new Map(),
       );
 
