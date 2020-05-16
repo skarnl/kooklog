@@ -8,8 +8,8 @@ export const TAG_PROTEIN__MEAT = 'tag_protein__meat';
 export const TAG_PROTEIN__FISH = 'tag_protein__fish';
 export const TAG_PROTEIN__VEGI = 'tag_protein__vegi';
 
-const SET_DISHES = 'set_dishes';
-const ADD_DISH = 'add_dish';
+const SET_DISHES = 'SET_DISHES';
+const ADD_DISH = 'ADD_DISHES';
 
 export const state = () => ({
   dishes: [],
