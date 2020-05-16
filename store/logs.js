@@ -82,7 +82,9 @@ export const getters = {
     })),
 
   sortedEntries: (state, getters) =>
-    getters.formattedEntries.slice().sort((a, b) => b.date - a.date),
+    getters.formattedEntries
+      .slice()
+      .sort((a, b) => DateTime.fromISO(b.date) - DateTime.fromISO(a.date)),
 
   lastWeekEntries: (state, getters) => getters.sortedEntries.slice(0, 10),
 };
