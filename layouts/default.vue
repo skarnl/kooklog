@@ -16,7 +16,7 @@
             <br />{{ 'Aan het opslaan...' }}
           </div>
         </v-overlay>
-        <AuthModal :show-dialog="!showAuthModule" />
+        <AuthModal :show-dialog="!isAuthenticated" />
       </v-container>
     </v-content>
     <BottomNavigation />
@@ -41,7 +41,7 @@ export default {
       loading: state => state.loading,
     }),
     ...mapGetters({
-      showAuthModule: 'aws/isAuthenticated',
+      isAuthenticated: 'aws/isAuthenticated',
     }),
   },
 };
