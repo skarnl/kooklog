@@ -18,8 +18,8 @@
                 doen.
               </p>
               <v-card-actions>
-                <v-btn color="primary" @click.stop="openAddDialog">
-                  Nieuwe log
+                <v-btn color="primary" to="/week">
+                  Weekoverzicht
                 </v-btn>
                 <v-btn color="primary" to="/list">
                   Naar lijst
