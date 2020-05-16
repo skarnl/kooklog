@@ -7,8 +7,21 @@
  */
 
 export const actions = {
-  async nuxtClientInit({ dispatch }, { app }) {
+  async nuxtClientInit({ commit, dispatch }, { app }) {
     await dispatch('aws/fetchInitialStore');
-    await dispatch('logs/fetchInitialStore', { app });
+    // await this.fetchInitialStore({ commit, dispatch }, { app });
+  },
+
+  async fetchInitialStore({ commit, dispatch }, { app }) {
+    const data = await app.$aws.fetch();
+
+    if (data) {
+      if (data.entries) {
+        dispatch('logs/setEntries', data.entries);
+      }
+      if (data.dishes) {
+        dispatch('cookbook/setDishes', data.dishes);
+      }
+    }
   },
 };
