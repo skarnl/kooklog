@@ -47,12 +47,10 @@ export default {
   },
   watch: {
     selectedDish() {
-      console.log('this.selectedDish changed : ', this.selectedDish);
-
-      // this.$store.dispatch('logs/addEntry', {
-      //   dish: this.selectedDish,
-      //   date: this.day,
-      // });
+      this.$store.dispatch('logs/addOrUpdateEntry', {
+        dish: this.selectedDish,
+        date: this.day,
+      });
     },
   },
 };
