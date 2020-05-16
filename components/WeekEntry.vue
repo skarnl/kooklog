@@ -33,7 +33,7 @@ export default {
     };
   },
   computed: {
-    ...mapState('dishes', {
+    ...mapState('cookbook', {
       items: state => state.dishes,
     }),
   },
