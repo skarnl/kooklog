@@ -1,12 +1,11 @@
 import * as R from 'ramda';
 import { DateTime } from 'luxon';
-import { createFakeEntries } from '../helpers/fake-data';
 import { makeEntry } from '../helpers/entry';
 
 const SET_ENTRIES = 'SET_ENTRIES';
 
 export const state = () => ({
-  entries: [...createFakeEntries()],
+  entries: [],
 });
 
 export const mutations = {

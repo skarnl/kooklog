@@ -1,5 +1,4 @@
 import * as R from 'ramda';
-import { getFakeDishes } from '../helpers/fake-data';
 
 export const TAG_KIND__PASTA = 'tag_kind__pasta';
 export const TAG_KIND__RICE = 'tag_kind__rice';
@@ -13,7 +12,7 @@ const SET_DISHES = 'set_dishes';
 const ADD_DISH = 'add_dish';
 
 export const state = () => ({
-  dishes: [...getFakeDishes()],
+  dishes: [],
   tags: {
     kind: [
       {
