@@ -88,8 +88,12 @@ export const createApi = ({ store }) => ({
     const remoteStore = await this.fetch();
 
     if (remoteStore) {
-      store.dispatch('logs/setEntries', remoteStore.logs.entries);
-      store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes);
+      store.dispatch('logs/setEntries', remoteStore.logs.entries, {
+        root: true,
+      });
+      store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes, {
+        root: true,
+      });
     }
   },
 });
