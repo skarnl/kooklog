@@ -1,50 +1,22 @@
 <template>
   <v-row justify="center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
+    <v-dialog
+      v-model="show"
+      persistent
+      max-width="600px"
+      @click:outside="close"
+    >
       <v-card>
         <v-card-title>
-          <span class="headline">Wat hebben we gegeten?</span>
+          <span class="headline">{{ formatedDay }}</span>
         </v-card-title>
         <v-card-text>
-          <v-container>
-            <v-row>
-              <v-form ref="entryform" lazy-validation>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="entry.name"
-                    label="Naam van gerecht"
-                    required
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-menu
-                    v-model="datepicker"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="entry.date"
-                        label="Datum"
-                        readonly
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker
-                      v-model="entry.date"
-                      @input="datepicker = false"
-                    ></v-date-picker>
-                  </v-menu>
-                </v-col>
-              </v-form>
-            </v-row>
-          </v-container>
+          <WeekEntry :entry="entry" @dishChanged="onDishChanged" />
         </v-card-text>
         <v-card-actions>
+          <v-btn color="primary" text @click="close">Annuleren</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="closeHandler">Close</v-btn>
-          <v-btn color="blue darken-1" text @click="saveHandler">Save</v-btn>
+          <v-btn color="primary" text @click="saveHandler">Opslaan</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -52,37 +24,62 @@
 </template>
 
 <script>
-import { eventBus } from '../eventBus';
+import { DateTime } from 'luxon';
+import WeekEntry from './WeekEntry';
 
 export default {
   name: 'EntryModal',
-  data: () => ({
-    dialog: false,
-    entry: {
-      name: '',
-      date: new Date().toISOString().substr(0, 10),
+  components: { WeekEntry },
+  props: {
+    show: {
+      type: Boolean,
+      default: false,
     },
-    datepicker: false,
-  }),
-  created() {
-    eventBus.$on('openDialog', () => {
-      this.dialog = true;
-    });
+    entry: {
+      type: Object,
+      default: null,
+    },
+    day: {
+      type: DateTime,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      selectedDish: null,
+    };
+  },
+  computed: {
+    formatedDay() {
+      if (this.day) {
+        return this.day
+          .setLocale('nl-nl')
+          .toLocaleString({ weekday: 'long' })
+          .toUpperCase();
+      }
+
+      return '';
+    },
   },
   methods: {
+    onDishChanged(selectedDish) {
+      this.selectedDish = selectedDish;
+    },
+
     saveHandler() {
-      this.$store.dispatch('logs/addEntry', { ...this.entry });
-      this.closeHandler();
+      // we need a timeout, because the change event will otherwise be done after this callback
+      setTimeout(() => {
+        this.$store.dispatch('logs/addOrUpdateEntry', {
+          dish: this.selectedDish,
+          date: this.day,
+        });
+
+        this.close();
+      }, 0);
     },
-    closeHandler() {
-      this.dialog = false;
-      this.clearForm();
-    },
-    clearForm() {
-      this.entry = {
-        name: '',
-        date: new Date().toISOString().substr(0, 10),
-      };
+
+    close() {
+      this.$emit('close');
     },
   },
 };

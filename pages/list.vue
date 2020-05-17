@@ -5,7 +5,7 @@
         <template v-for="item in sortedEntries">
           <v-list-item :key="item.id">
             <v-list-item-content>
-              <v-list-item-title v-text="item.displayName" />
+              <v-list-item-title v-text="item.dish.name" />
             </v-list-item-content>
 
             <v-list-item-action>

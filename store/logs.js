@@ -77,7 +77,7 @@ export const getters = {
   formattedEntries: (state, getters, rootState, rootGetters) =>
     state.entries.map(entry => ({
       ...entry,
-      displayName: rootGetters['cookbook/getDishById'](entry.dishId).name,
+      dish: rootGetters['cookbook/getDishById'](entry.dishId),
       formattedDate: formatDate(entry.date),
     })),
 

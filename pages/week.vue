@@ -1,52 +1,74 @@
 <template>
-  <v-row justify="center">
-    <v-col cols="12" md="8">
-      <template v-for="(item, index) in weekEntries">
-        <v-list-item :key="index">
-          <v-row>
-            <v-col
-              cols="2"
-              align="left"
-              justify="center"
-              class="day-row"
-              :class="{ 'day-row--today': today.hasSame(item.day, 'day') }"
-            >
-              <span class="display-1  font-weight-black  day-row__title">{{
-                formatDay(item.day)
-              }}</span>
-            </v-col>
+  <div>
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <template v-for="(item, index) in weekEntries">
+          <v-list-item :key="index">
+            <v-row @click.stop="openEditEntryDialog(item)">
+              <v-col
+                cols="2"
+                align="left"
+                justify="center"
+                class="day-row"
+                :class="{ 'day-row--today': today.hasSame(item.day, 'day') }"
+              >
+                <span class="display-1  font-weight-black  day-row__title">{{
+                  formatDay(item.day)
+                }}</span>
+              </v-col>
 
-            <v-col
-              cols="10"
-              class="dish"
-              :class="{
-                'dish--empty': !item.entry,
-              }"
-            >
-              <WeekEntry :entry="item.entry" :day="item.day" />
-            </v-col>
-          </v-row>
-        </v-list-item>
+              <v-col
+                cols="10"
+                class="dish"
+                :class="{
+                  'dish--empty': !item.entry,
+                }"
+              >
+                <template v-if="item.entry">
+                  {{ item.entry.dish.name }}
+                </template>
 
-        <v-divider
-          v-if="index + 1 < weekEntries.length"
-          :key="item.id"
-          inset
-        ></v-divider>
-      </template>
-    </v-col>
-  </v-row>
+                <!-- TOODOOOOOOO  iets van styling doen -->
+                <!-- TOODOOOOOOO  iets van styling doen -->
+                <!-- TOODOOOOOOO  iets van styling doen -->
+                <!-- TOODOOOOOOO  iets van styling doen -->
+                <!-- TOODOOOOOOO  iets van styling doen -->
+                <!-- TOODOOOOOOO  iets van styling doen -->
+
+                <template v-else>Klik om iets toe te voegen</template>
+              </v-col>
+            </v-row>
+          </v-list-item>
+
+          <v-divider
+            v-if="index + 1 < weekEntries.length"
+            :key="item.id"
+            inset
+          ></v-divider>
+        </template>
+      </v-col>
+    </v-row>
+    <EntryModal
+      :show="showEntryModal"
+      :entry="selectedEntry"
+      :day="selectedDay"
+      @close="showEntryModal = false"
+    />
+  </div>
 </template>
 
 <script>
 import { DateTime } from 'luxon';
-import WeekEntry from '../components/WeekEntry';
+import EntryModal from '../components/EntryModal';
 
 export default {
   name: 'Week',
-  components: { WeekEntry },
+  components: { EntryModal },
   data: () => ({
     today: DateTime.local(),
+    showEntryModal: false,
+    selectedEntry: null,
+    selectedDay: null,
   }),
   computed: {
     weekEntries() {
@@ -83,6 +105,11 @@ export default {
         .setLocale('nl-nl')
         .toLocaleString({ weekday: 'short' })
         .toUpperCase();
+    },
+    openEditEntryDialog({ entry, day }) {
+      this.selectedEntry = entry;
+      this.selectedDay = day;
+      this.showEntryModal = true;
     },
   },
 };

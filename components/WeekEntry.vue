@@ -9,13 +9,13 @@
       hide-no-data
       flat
       solo
+      @change="onChange"
     ></v-combobox>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
-import { DateTime } from 'luxon';
 
 export default {
   name: 'WeekEntry',
@@ -23,10 +23,6 @@ export default {
     entry: {
       type: Object,
       default: null,
-    },
-    day: {
-      type: DateTime,
-      required: true,
     },
   },
   data() {
@@ -46,11 +42,19 @@ export default {
     }),
   },
   watch: {
-    selectedDish() {
-      this.$store.dispatch('logs/addOrUpdateEntry', {
-        dish: this.selectedDish,
-        date: this.day,
-      });
+    entry() {
+      this.selectedDish = this.entry
+        ? {
+            ...this.$store.state.cookbook.dishes.find(
+              dish => dish.id === this.entry.dishId,
+            ),
+          }
+        : null;
+    },
+  },
+  methods: {
+    onChange() {
+      this.$emit('dishChanged', this.selectedDish);
     },
   },
 };
