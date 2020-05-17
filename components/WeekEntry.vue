@@ -6,6 +6,7 @@
       item-value="id"
       :items="items"
       placeholder="Klik om iets in te voeren"
+      allow-overflow="false"
       hide-no-data
       flat
       solo
