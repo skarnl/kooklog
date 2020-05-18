@@ -6,11 +6,14 @@
       item-value="id"
       :items="items"
       placeholder="Klik om iets in te voeren"
-      allow-overflow="false"
       hide-no-data
       flat
       solo
+      clearable
       @change="onChange"
+      :filter="filter"
+      :menu-props="menuProps"
+      :search-input.sync="search"
     ></v-combobox>
   </div>
 </template>
@@ -35,6 +38,7 @@ export default {
             ),
           }
         : null,
+      search: null,
     };
   },
   computed: {
@@ -43,6 +47,9 @@ export default {
         return [...state.dishes].sort(this.sortDishesByName);
       },
     }),
+    menuProps() {
+      return !this.search ? { value: false } : {};
+    },
   },
   watch: {
     entry() {
@@ -67,6 +74,24 @@ export default {
         return 1;
       }
       return 0;
+    },
+    filter(item, queryText, itemText) {
+      if (item.header) return false;
+
+      if (queryText.length < 3) {
+        return;
+      }
+
+      const hasValue = val => (val != null ? val : '');
+
+      const text = hasValue(itemText)
+        .toString()
+        .toLowerCase();
+      const query = hasValue(queryText)
+        .toString()
+        .toLowerCase();
+
+      return text.includes(query);
     },
   },
 };
