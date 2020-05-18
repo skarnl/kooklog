@@ -39,7 +39,9 @@ export default {
   },
   computed: {
     ...mapState('cookbook', {
-      items: state => state.dishes,
+      items(state) {
+        return [...state.dishes].sort(this.sortDishesByName);
+      },
     }),
   },
   watch: {
@@ -56,6 +58,15 @@ export default {
   methods: {
     onChange() {
       this.$emit('dishChanged', this.selectedDish);
+    },
+    sortDishesByName(a, b) {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
     },
   },
 };
