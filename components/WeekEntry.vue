@@ -10,10 +10,10 @@
       flat
       solo
       clearable
-      @change="onChange"
       :filter="filter"
       :menu-props="menuProps"
       :search-input.sync="search"
+      @change="onChange"
     ></v-combobox>
   </div>
 </template>
