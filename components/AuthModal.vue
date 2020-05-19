@@ -37,16 +37,20 @@
   </v-row>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue';
+
+export default Vue.extend({
   name: 'AuthModal',
   props: {
     showDialog: Boolean,
   },
-  data: () => ({
-    accessKey: '',
-    secretKey: '',
-  }),
+  data() {
+    return {
+      accessKey: '',
+      secretKey: '',
+    };
+  },
   methods: {
     saveHandler() {
       if (this.accessKey && this.secretKey) {
@@ -57,7 +61,7 @@ export default {
       }
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss"></style>
