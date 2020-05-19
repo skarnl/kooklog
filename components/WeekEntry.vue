@@ -19,9 +19,10 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import { mapState } from 'vuex';
 
-export default {
+export default Vue.extend({
   name: 'WeekEntry',
   props: {
     entry: {
@@ -94,7 +95,7 @@ export default {
       return text.includes(query);
     },
   },
-};
+});
 </script>
 
 <style lang="scss">
