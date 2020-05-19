@@ -18,17 +18,18 @@
   </v-bottom-navigation>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { eventBus } from '../eventBus';
 
-export default {
+export default Vue.extend({
   name: 'BottomNavigation',
   methods: {
     openAddEntryDialog() {
       eventBus.$emit('openDialog');
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss"></style>
