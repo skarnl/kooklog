@@ -23,11 +23,32 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { DateTime } from 'luxon';
-import WeekEntry from './WeekEntry';
+import WeekEntry from './WeekEntry.vue';
 
-export default {
+type Data = {
+  selectedDish: string | Object | null;
+};
+
+type Methods = {
+  onDishChanged: Function;
+  saveHandler: Function;
+  close: Function;
+};
+
+type Computed = {
+  formatedDay: string;
+};
+
+type Props = {
+  show: boolean;
+  entry: Object | null;
+  day: DateTime | null;
+};
+
+export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'EntryModal',
   components: { WeekEntry },
   props: {
@@ -62,7 +83,7 @@ export default {
     },
   },
   methods: {
-    onDishChanged(selectedDish) {
+    onDishChanged(selectedDish: string | Object) {
       this.selectedDish = selectedDish;
     },
 
@@ -82,7 +103,7 @@ export default {
       this.$emit('close');
     },
   },
-};
+});
 </script>
 
 <style scoped lang="scss"></style>
