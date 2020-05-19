@@ -50,6 +50,7 @@ export default {
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     '@nuxtjs/vuetify',
+    '@nuxt/typescript-build',
   ],
   /*
    ** Nuxt.js modules
