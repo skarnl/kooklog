@@ -1,34 +1,50 @@
 import * as R from 'ramda';
 import { DateTime } from 'luxon';
-import { makeEntry } from '../helpers/entry';
+import { ActionTree, GetterTree } from 'vuex';
+import { makeEntry, Entry } from '../helpers/entry';
+import { RootState } from '~/store/index';
+import { Dish } from '~/store/cookbook';
 
 const SET_ENTRIES = 'SET_ENTRIES';
 
-export const state = () => ({
+export interface LogsState {
+  entries: Entry[];
+}
+
+export const state = (): LogsState => ({
   entries: [],
 });
 
 export const mutations = {
-  [SET_ENTRIES](state, entries) {
+  [SET_ENTRIES](state: LogsState, entries: Entry[]) {
     state.entries = [...entries];
   },
 };
 
-const wait = timeInMillisecs =>
+const wait = (timeInMillisecs: number): Promise<void> =>
   new Promise(resolve => setTimeout(resolve, timeInMillisecs));
 
-export const actions = {
-  setEntries({ commit }, entries) {
+// TODO: rethink the setup/name for this
+export interface CreatedEntry {
+  dish: string | Dish;
+  date: DateTime;
+}
+
+export const actions: ActionTree<LogsState, RootState> = {
+  setEntries({ commit }, entries: Entry[]) {
     commit(SET_ENTRIES, entries);
   },
 
-  async addOrUpdateEntry({ commit, state, dispatch }, { dish, date }) {
+  async addOrUpdateEntry(
+    { commit, state, dispatch },
+    { dish, date }: CreatedEntry,
+  ) {
     dispatch('app/loading', true, { root: true });
 
     try {
       await this.$aws.sync();
 
-      let dishToAdd = dish;
+      let dishToAdd: Dish;
 
       if (typeof dish === 'string') {
         dishToAdd = await dispatch(
@@ -36,6 +52,8 @@ export const actions = {
           { dishName: dish },
           { root: true },
         );
+      } else {
+        dishToAdd = dish;
       }
 
       const newEntry = makeEntry(date, dishToAdd.id);
@@ -63,7 +81,7 @@ export const actions = {
   },
 };
 
-const formatDate = date =>
+const formatDate = (date: string): string =>
   DateTime.fromISO(date)
     .setLocale('nl-NL')
     .toLocaleString({
@@ -73,18 +91,33 @@ const formatDate = date =>
       day: 'numeric',
     });
 
-export const getters = {
-  formattedEntries: (state, getters, rootState, rootGetters) =>
+export type FormattedEntry = Entry & {
+  dish: Dish;
+  formattedDate: string;
+};
+
+export const getters: GetterTree<LogsState, RootState> = {
+  formattedEntries: (
+    state,
+    getters,
+    rootState,
+    rootGetters,
+  ): FormattedEntry[] =>
     state.entries.map(entry => ({
       ...entry,
-      dish: rootGetters['cookbook/getDishById'](entry.dishId),
+      dish: rootGetters['cookbook.ts/getDishById'](entry.dishId),
       formattedDate: formatDate(entry.date),
     })),
 
   sortedEntries: (state, getters) =>
     getters.formattedEntries
       .slice()
-      .sort((a, b) => DateTime.fromISO(b.date) - DateTime.fromISO(a.date)),
+      .sort(
+        (a: FormattedEntry, b: FormattedEntry) =>
+          DateTime.fromISO(b.date).toMillis() -
+          DateTime.fromISO(a.date).toMillis(),
+      ),
 
-  lastWeekEntries: (state, getters) => getters.sortedEntries.slice(0, 10),
+  lastWeekEntries: (state, getters): FormattedEntry[] =>
+    getters.sortedEntries.slice(0, 10),
 };
