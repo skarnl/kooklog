@@ -1,10 +1,35 @@
 import AWS from 'aws-sdk';
 import { DateTime } from 'luxon';
+import { Entry } from '~/helpers/entry';
+import { Dish } from '~/store/cookbook';
+import { RootState } from '~/store';
 
 const BUCKET_NAME = 'rakso-kooklog-store';
 const BUCKET_OBJECT_KEY = 'kooklog-store.json';
 
-export const createApi = ({ store }) => ({
+export interface RemoteStore {
+  lastMutationDate: string;
+  logs: {
+    entries: Entry[];
+  };
+  cookbook: {
+    dishes: Dish[];
+  };
+}
+
+export interface AwsService {
+  client: null | AWS.S3;
+  getClient: () => undefined | AWS.S3;
+  upload: () => void;
+  fetch: () => void | Promise<RemoteStore>;
+  sync: () => void;
+}
+
+export const createApi = ({
+  store,
+}: {
+  store: { state: RootState };
+}): AwsService => ({
   client: null,
 
   getClient() {
@@ -24,12 +49,18 @@ export const createApi = ({ store }) => ({
     return this.client;
   },
 
+  /**
+   * Update the remote store with the current local store state
+   */
   async upload() {
-    if (!this.getClient()) {
+    const client = this.getClient();
+
+    if (!client) {
       return;
     }
 
-    const newRemoteStore = {
+    const newRemoteStore: RemoteStore = {
+      lastMutationDate: DateTime.local().toISO(),
       logs: {
         entries: store.state.logs.entries,
       },
@@ -37,9 +68,6 @@ export const createApi = ({ store }) => ({
         dishes: store.state.cookbook.dishes,
       },
     };
-
-    // for logging purposes
-    newRemoteStore.lastMutationDate = DateTime.local().toISO();
 
     try {
       const params = {
@@ -50,16 +78,21 @@ export const createApi = ({ store }) => ({
         CacheControl: 'max-age=60',
       };
 
-      await this.getClient()
-        .putObject(params)
-        .promise();
+      await client.putObject(params).promise();
     } catch (e) {
       throw new Error(`Could not upload file to S3: ${e.message}`);
     }
   },
 
+  /**
+   * Fetch the remote store
+   *
+   * @returns {void | Promise<RemoteStore>}
+   */
   async fetch() {
-    if (!this.getClient()) {
+    const client = this.getClient();
+
+    if (!client) {
       return;
     }
 
@@ -69,11 +102,13 @@ export const createApi = ({ store }) => ({
         Key: BUCKET_OBJECT_KEY,
       };
 
-      const data = await this.getClient()
-        .getObject(params)
-        .promise();
+      const data = await client.getObject(params).promise();
 
-      return JSON.parse(data.Body.toString());
+      if (data.Body) {
+        return JSON.parse(data.Body.toString());
+      }
+
+      throw new Error('Apparently the Body is empty 🤔');
     } catch (e) {
       throw new Error(`Could not retrieve file from S3: ${e.message}`);
     }

@@ -5,8 +5,18 @@
  * It's only called in the root-store (store/index.js),
  * so we need to pass this through to the modular-stores
  */
+import { ActionTree } from 'vuex';
+import { LogsState } from '~/store/logs';
+import { CookbookState } from '~/store/cookbook';
 
-export const actions = {
+export type RootState = {
+  app: any;
+  aws: any;
+  logs: LogsState;
+  cookbook: CookbookState;
+};
+
+export const actions: ActionTree<RootState, RootState> = {
   async nuxtClientInit({ commit, dispatch }, { app }) {
     await dispatch('aws/fetchInitialStore');
     await dispatch('fetchInitialStore', { app });

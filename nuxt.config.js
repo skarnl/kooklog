@@ -38,7 +38,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    { src: '~/plugins/setup-aws.js' },
+    { src: '~/plugins/setup-aws.ts' },
     { src: '~/plugins/nuxt-client-init.js' },
   ],
   /*
