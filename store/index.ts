@@ -17,7 +17,7 @@ export type RootState = {
 };
 
 export const actions: ActionTree<RootState, RootState> = {
-  async nuxtClientInit({ commit, dispatch }, { app }) {
+  async nuxtClientInit({ dispatch }, { app }) {
     await dispatch('aws/fetchInitialStore');
     await dispatch('fetchInitialStore', { app });
   },

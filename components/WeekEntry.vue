@@ -14,7 +14,7 @@
       :menu-props="menuProps"
       :search-input.sync="search"
       @change="onChange"
-    ></v-combobox>
+    />
   </div>
 </template>
 
@@ -77,7 +77,9 @@ export default Vue.extend({
       return 0;
     },
     filter(item, queryText, itemText) {
-      if (item.header) return false;
+      if (item.header) {
+        return false;
+      }
 
       if (queryText.length < 3) {
         return;

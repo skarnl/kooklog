@@ -14,14 +14,14 @@
                     v-model="accessKey"
                     label="Access key"
                     required
-                  ></v-text-field>
+                  />
                 </v-col>
                 <v-col cols="12">
                   <v-text-field
                     v-model="secretKey"
                     label="Secret key"
                     required
-                  ></v-text-field>
+                  />
                 </v-col>
               </v-form>
             </v-row>
@@ -29,7 +29,9 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="blue darken-1" text @click="saveHandler">Save</v-btn>
+          <v-btn color="blue darken-1" text @click="saveHandler">
+            Save
+          </v-btn>
           <v-spacer />
         </v-card-actions>
       </v-card>

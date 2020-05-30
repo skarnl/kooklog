@@ -4,7 +4,9 @@
       <v-col cols="12">
         <v-row justify="center" align-content="center">
           <v-card class="ma-3 pa-6" tile>
-            <v-card-title class="headline">Kooklog</v-card-title>
+            <v-card-title class="headline">
+              Kooklog
+            </v-card-title>
             <v-card-text>
               <p>
                 Dit <span class="font-italic">logboek</span> is bedoelt om bij

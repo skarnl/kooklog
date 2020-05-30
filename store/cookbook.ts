@@ -1,4 +1,6 @@
 import * as R from 'ramda';
+import { ActionTree, MutationTree, GetterTree } from 'vuex';
+import { RootState } from '~/store/index';
 
 export const TAG_KIND__PASTA = 'tag_kind__pasta';
 export const TAG_KIND__RICE = 'tag_kind__rice';
@@ -11,7 +13,26 @@ export const TAG_PROTEIN__VEGI = 'tag_protein__vegi';
 const SET_DISHES = 'SET_DISHES';
 const ADD_DISH = 'ADD_DISH';
 
-export const state = () => ({
+export interface Dish {
+  id: number;
+  name: string;
+  tags: string[];
+}
+
+interface Tag {
+  id: string;
+  name: string;
+}
+
+export interface CookbookState {
+  dishes: Dish[];
+  tags: {
+    kind: Tag[];
+    protein: Tag[];
+  };
+}
+
+export const state = (): CookbookState => ({
   dishes: [],
   tags: {
     kind: [
@@ -45,23 +66,24 @@ export const state = () => ({
   },
 });
 
-export const mutations = {
+export const mutations: MutationTree<CookbookState> = {
   [SET_DISHES](state, dishes) {
     state.dishes = [...dishes];
   },
-  [ADD_DISH](state, newDish) {
+  [ADD_DISH](state, newDish: Dish) {
     state.dishes = [...state.dishes, newDish];
   },
 };
 
-export const actions = {
-  setDishes({ commit, state }, dishes) {
+export const actions: ActionTree<CookbookState, RootState> = {
+  setDishes({ commit }, dishes) {
     commit(SET_DISHES, dishes);
   },
 
-  addDish({ commit, state, dispatch }, { dishName }) {
-    const id = R.last(state.dishes).id + 1;
-    const dish = { id, name: dishName };
+  addDish({ commit, state }, { dishName }: { dishName: string }) {
+    const lastDish = R.last(state.dishes);
+    const id = lastDish ? lastDish.id + 1 : 1;
+    const dish: Dish = { id, name: dishName, tags: [] };
 
     commit(ADD_DISH, dish);
 
@@ -69,8 +91,7 @@ export const actions = {
   },
 };
 
-export const getters = {
-  getDishById: state => dishId =>
-    // TODO: if performance is an issue, replace this with for-loop ^^
+export const getters: GetterTree<CookbookState, RootState> = {
+  getDishById: state => (dishId: number): Dish | undefined =>
     state.dishes.find(entry => entry.id === dishId),
 };

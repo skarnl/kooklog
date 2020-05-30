@@ -14,9 +14,13 @@
           <WeekEntry :entry="entry" @dishChanged="onDishChanged" />
         </v-card-text>
         <v-card-actions>
-          <v-btn color="primary" text @click="close">Annuleren</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="primary" text @click="saveHandler">Opslaan</v-btn>
+          <v-btn color="primary" text @click="close">
+            Annuleren
+          </v-btn>
+          <v-spacer />
+          <v-btn color="primary" text @click="saveHandler">
+            Opslaan
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

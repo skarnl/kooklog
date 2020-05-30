@@ -35,7 +35,9 @@
                 <!-- TOODOOOOOOO  iets van styling doen -->
                 <!-- TOODOOOOOOO  iets van styling doen -->
 
-                <template v-else>Klik om iets toe te voegen</template>
+                <template v-else>
+                  Klik om iets toe te voegen
+                </template>
               </v-col>
             </v-row>
           </v-list-item>
@@ -44,7 +46,7 @@
             v-if="index + 1 < weekEntries.length"
             :key="item.id"
             inset
-          ></v-divider>
+          />
         </template>
       </v-col>
     </v-row>

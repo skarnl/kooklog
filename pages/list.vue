@@ -25,10 +25,7 @@
             </v-list-item-action>
           </v-list-item>
 
-          <v-divider
-            v-if="index + 1 < sortedEntries.length"
-            :key="item.id"
-          ></v-divider>
+          <v-divider v-if="index + 1 < sortedEntries.length" :key="item.id" />
         </template>
       </template>
 

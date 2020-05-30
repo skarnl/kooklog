@@ -20,8 +20,8 @@ declare module 'vuex/types/index' {
   }
 }
 
-const setupAws: Plugin = ({ store }, inject) => {
-  inject('aws', createApi({ store }));
+const setupAws: Plugin = (context, inject) => {
+  inject('aws', createApi(context));
 };
 
 export default setupAws;

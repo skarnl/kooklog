@@ -21,24 +21,12 @@ export const mutations = {
   },
 };
 
-const wait = (timeInMillisecs: number): Promise<void> =>
-  new Promise(resolve => setTimeout(resolve, timeInMillisecs));
-
-// TODO: rethink the setup/name for this
-export interface CreatedEntry {
-  dish: string | Dish;
-  date: DateTime;
-}
-
 export const actions: ActionTree<LogsState, RootState> = {
   setEntries({ commit }, entries: Entry[]) {
     commit(SET_ENTRIES, entries);
   },
 
-  async addOrUpdateEntry(
-    { commit, state, dispatch },
-    { dish, date }: CreatedEntry,
-  ) {
+  async addOrUpdateEntry({ state, dispatch }, { dish, date }: CreatedEntry) {
     dispatch('app/loading', true, { root: true });
 
     try {
@@ -81,21 +69,6 @@ export const actions: ActionTree<LogsState, RootState> = {
   },
 };
 
-const formatDate = (date: string): string =>
-  DateTime.fromISO(date)
-    .setLocale('nl-NL')
-    .toLocaleString({
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-
-export type FormattedEntry = Entry & {
-  dish: Dish;
-  formattedDate: string;
-};
-
 export const getters: GetterTree<LogsState, RootState> = {
   formattedEntries: (
     state,
@@ -121,3 +94,26 @@ export const getters: GetterTree<LogsState, RootState> = {
   lastWeekEntries: (state, getters): FormattedEntry[] =>
     getters.sortedEntries.slice(0, 10),
 };
+
+const wait = (timeInMillisecs: number): Promise<void> =>
+  new Promise(resolve => setTimeout(resolve, timeInMillisecs));
+
+export interface CreatedEntry {
+  dish: string | Dish;
+  date: DateTime;
+}
+
+export interface FormattedEntry extends Entry {
+  dish: Dish;
+  formattedDate: string;
+}
+
+const formatDate = (date: string): string =>
+  DateTime.fromISO(date)
+    .setLocale('nl-NL')
+    .toLocaleString({
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    });

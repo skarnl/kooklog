@@ -14,7 +14,7 @@
               color="primary"
               size="48"
               width="6"
-            ></v-progress-circular>
+            />
           </div>
         </v-overlay>
         <AuthModal :show-dialog="!isAuthenticated" />

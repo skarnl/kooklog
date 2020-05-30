@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk';
 import { DateTime } from 'luxon';
+import { Context } from '@nuxt/types';
 import { Entry } from '~/helpers/entry';
 import { Dish } from '~/store/cookbook';
-import { RootState } from '~/store';
 
 const BUCKET_NAME = 'rakso-kooklog-store';
 const BUCKET_OBJECT_KEY = 'kooklog-store.json';
@@ -25,11 +25,7 @@ export interface AwsService {
   sync: () => void;
 }
 
-export const createApi = ({
-  store,
-}: {
-  store: { state: RootState };
-}): AwsService => ({
+export const createApi = ({ store }: Context): AwsService => ({
   client: null,
 
   getClient() {
