@@ -22,7 +22,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchInitialStore({ commit }) {
+  async fetchLocalStoredCredentials({ commit }) {
     if (process.client) {
       const localAccessKey = await window.localStorage.getItem(
         LOCAL_ACCESS_KEY,
