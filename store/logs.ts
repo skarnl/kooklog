@@ -78,7 +78,7 @@ export const getters: GetterTree<LogsState, RootState> = {
   ): FormattedEntry[] =>
     state.entries.map(entry => ({
       ...entry,
-      dish: rootGetters['cookbook.ts/getDishById'](entry.dishId),
+      dish: rootGetters['cookbook/getDishById'](entry.dishId),
       formattedDate: formatDate(entry.date),
     })),
 
