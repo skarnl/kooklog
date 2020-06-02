@@ -54,7 +54,7 @@
       :show="showEntryModal"
       :entry="selectedEntry"
       :day="selectedDay"
-      @close="showEntryModal = false"
+      @close="closeEditEntryDialog"
     />
   </div>
 </template>
@@ -112,6 +112,10 @@ export default {
       this.selectedEntry = entry;
       this.selectedDay = day;
       this.showEntryModal = true;
+    },
+    closeEditEntryDialog() {
+      this.selectedDay = null;
+      this.showEntryModal = false;
     },
   },
 };

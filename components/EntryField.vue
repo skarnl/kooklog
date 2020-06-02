@@ -21,24 +21,23 @@
 <script>
 import Vue from 'vue';
 import { mapState } from 'vuex';
+import { DateTime } from 'luxon';
 
 export default Vue.extend({
-  name: 'WeekEntry',
+  name: 'EntryField',
   props: {
     entry: {
       type: Object,
       default: null,
     },
+    day: {
+      type: DateTime,
+      default: null,
+    },
   },
   data() {
     return {
-      selectedDish: this.entry
-        ? {
-            ...this.$store.state.cookbook.dishes.find(
-              dish => dish.id === this.entry.dishId,
-            ),
-          }
-        : null,
+      selectedDish: null,
       search: null,
     };
   },
@@ -53,7 +52,11 @@ export default Vue.extend({
     },
   },
   watch: {
-    entry() {
+    /**
+     * We listen to the day - since empty entries are null so there is not change detected otherwise
+     * so therefor we watch the day (which can hacky can be set to null ^^)
+     */
+    day() {
       this.selectedDish = this.entry
         ? {
             ...this.$store.state.cookbook.dishes.find(

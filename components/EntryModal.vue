@@ -11,7 +11,7 @@
           <span class="headline">{{ formatedDay }}</span>
         </v-card-title>
         <v-card-text>
-          <WeekEntry :entry="entry" @dishChanged="onDishChanged" />
+          <EntryField :entry="entry" :day="day" @dishChanged="onDishChanged" />
         </v-card-text>
         <v-card-actions>
           <v-btn color="primary" text @click="close">
@@ -30,7 +30,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import { DateTime } from 'luxon';
-import WeekEntry from './WeekEntry.vue';
+import EntryField from './EntryField.vue';
 
 type Data = {
   selectedDish: string | Object | null;
@@ -54,7 +54,7 @@ type Props = {
 
 export default Vue.extend<Data, Methods, Computed, Props>({
   name: 'EntryModal',
-  components: { WeekEntry },
+  components: { EntryField },
   props: {
     show: {
       type: Boolean,
