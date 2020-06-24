@@ -4,17 +4,21 @@
       <v-icon>mdi-playlist-edit</v-icon>
     </v-btn>
 
-    <v-btn value="recent" to="/list">
-      <v-icon>mdi-filter-variant</v-icon>
+    <v-btn value="recent" to="/history">
+      <v-icon>mdi-format-list-checkbox</v-icon>
     </v-btn>
 
-    <v-btn value="favorites">
-      <v-icon>mdi-heart</v-icon>
-    </v-btn>
+<!--    <v-btn value="recent" to="/list">-->
+<!--      <v-icon>mdi-filter-variant</v-icon>-->
+<!--    </v-btn>-->
 
-    <v-btn value="search" @click="openAddEntryDialog">
-      <v-icon>mdi-magnify</v-icon>
-    </v-btn>
+    <!--    <v-btn value="favorites">-->
+    <!--      <v-icon>mdi-heart</v-icon>-->
+    <!--    </v-btn>-->
+
+    <!--    <v-btn value="search" @click="openAddEntryDialog">-->
+    <!--      <v-icon>mdi-magnify</v-icon>-->
+    <!--    </v-btn>-->
   </v-bottom-navigation>
 </template>
 

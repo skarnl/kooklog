@@ -2,8 +2,8 @@
   <v-row justify="center">
     <v-col cols="12" md="8">
       <template v-if="sortedEntries.length">
-        <template v-for="item in sortedEntries">
-          <v-list-item :key="item.id">
+        <template v-for="(item, index) in sortedEntries">
+          <v-list-item :key="`item__${item.id}`">
             <v-list-item-content>
               <v-list-item-title v-text="item.dish.name" />
             </v-list-item-content>
@@ -25,7 +25,10 @@
             </v-list-item-action>
           </v-list-item>
 
-          <v-divider v-if="index + 1 < sortedEntries.length" :key="item.id" />
+          <v-divider
+            v-if="index + 1 < sortedEntries.length"
+            :key="`divider__${item.id}`"
+          />
         </template>
       </template>
 
@@ -42,7 +45,7 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'List',
+  name: 'History',
   computed: {
     ...mapGetters('logs', ['sortedEntries']),
   },
