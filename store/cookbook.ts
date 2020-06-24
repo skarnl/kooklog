@@ -94,4 +94,9 @@ export const actions: ActionTree<CookbookState, RootState> = {
 export const getters: GetterTree<CookbookState, RootState> = {
   getDishById: state => (dishId: number): Dish | undefined =>
     state.dishes.find(entry => entry.id === dishId),
+
+  sortedDishes: state =>
+    state.dishes
+      .slice()
+      .sort((a: Dish, b: Dish) => a.name.localeCompare(b.name)),
 };
