@@ -14,6 +14,7 @@
       :menu-props="menuProps"
       :search-input.sync="search"
       @change="onChange"
+      autofocus
     />
   </div>
 </template>
