@@ -101,6 +101,13 @@ export default {
       return entries;
     },
   },
+  created() {
+    // if we are looking at this before the next morning
+    // we assume we haven't slept yet and still think today is yesterday ^^
+    if (this.today.hour <= 5) {
+      this.today = this.today.minus({ day: 1 });
+    }
+  },
   methods: {
     formatDay(day) {
       return day
