@@ -8,9 +8,9 @@
       <v-icon>mdi-format-list-checkbox</v-icon>
     </v-btn>
 
-<!--    <v-btn value="recent" to="/list">-->
-<!--      <v-icon>mdi-filter-variant</v-icon>-->
-<!--    </v-btn>-->
+    <v-btn value="recent" to="/dishes">
+      <v-icon>mdi-filter-variant</v-icon>
+    </v-btn>
 
     <!--    <v-btn value="favorites">-->
     <!--      <v-icon>mdi-heart</v-icon>-->
