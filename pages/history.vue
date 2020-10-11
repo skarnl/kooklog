@@ -41,13 +41,14 @@
   </v-row>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { mapGetters } from 'vuex';
 
-export default {
+export default Vue.extend({
   name: 'History',
   computed: {
     ...mapGetters('logs', ['sortedEntries']),
   },
-};
+});
 </script>
