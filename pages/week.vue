@@ -8,20 +8,30 @@
               <v-col
                 cols="2"
                 align="left"
+                align-self="center"
                 justify="center"
                 class="day-row"
-                :class="{ 'day-row--today': today.hasSame(item.day, 'day') }"
+                :class="{
+                  'day-row--today': today.hasSame(item.day, 'day'),
+                  'pa-0': $vuetify.breakpoint.xsAndDown,
+                  'pa-1': $vuetify.breakpoint.smAndDown,
+                }"
               >
-                <span class="display-1  font-weight-black  day-row__title">{{
-                  formatDay(item.day)
-                }}</span>
+                <span
+                  :class="{ 'display-1': $vuetify.breakpoint.smAndUp }"
+                  class="font-weight-black  day-row__title"
+                  >{{ formatDay(item.day) }}</span
+                >
               </v-col>
 
               <v-col
                 cols="10"
                 class="dish"
+                align-self="center"
                 :class="{
                   'dish--empty': !item.entry,
+                  'pa-0': $vuetify.breakpoint.xsAndDown,
+                  'pa-1': $vuetify.breakpoint.smAndDown,
                 }"
               >
                 <template v-if="item.entry">

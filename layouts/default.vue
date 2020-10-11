@@ -5,7 +5,7 @@
       <span class="overline">v2.2.0</span>
     </v-app-bar>
     <v-content>
-      <v-container fluid>
+      <v-container fluid class="pa-0">
         <nuxt />
         <v-overlay :value="loading" color="#bdbdbd">
           <div class="text-center">

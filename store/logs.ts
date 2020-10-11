@@ -112,8 +112,8 @@ const formatDate = (date: string): string =>
   DateTime.fromISO(date)
     .setLocale('nl-NL')
     .toLocaleString({
-      weekday: 'long',
+      weekday: 'short',
       year: 'numeric',
-      month: 'long',
+      month: 'short',
       day: 'numeric',
     });
