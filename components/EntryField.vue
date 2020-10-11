@@ -13,8 +13,8 @@
       :filter="filter"
       :menu-props="menuProps"
       :search-input.sync="search"
-      @change="onChange"
       autofocus
+      @change="onChange"
     />
   </div>
 </template>
