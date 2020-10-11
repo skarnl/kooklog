@@ -2,7 +2,7 @@
   <v-app dark>
     <v-app-bar app dense flat short tile>
       <v-spacer />
-      <span class="overline">v2.2.0</span>
+      <span class="overline">v2.2.1</span>
     </v-app-bar>
     <v-content>
       <v-container fluid class="pa-0">
