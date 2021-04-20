@@ -3,7 +3,7 @@
     <v-col cols="12" md="8">
       <template v-if="sortedEntries.length">
         <template v-for="(item, index) in sortedEntries">
-          <v-list-item :key="`item__${item.id}`">
+          <v-list-item :key="`item__${index}`">
             <v-list-item-content>
               <v-list-item-title v-text="item.dish.name" />
             </v-list-item-content>
@@ -27,7 +27,7 @@
 
           <v-divider
             v-if="index + 1 < sortedEntries.length"
-            :key="`divider__${item.id}`"
+            :key="`divider__${index}`"
           />
         </template>
       </template>
