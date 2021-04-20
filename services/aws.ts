@@ -1,4 +1,11 @@
-import AWS from 'aws-sdk';
+import {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+  // GetObjectCommandOutput,
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+
 import { DateTime } from 'luxon';
 import { Context } from '@nuxt/types';
 import { Entry } from '~/helpers/entry';
@@ -18,8 +25,8 @@ export interface RemoteStore {
 }
 
 export interface AwsService {
-  client: null | AWS.S3;
-  getClient: () => undefined | AWS.S3;
+  client: null | S3Client;
+  getClient: () => undefined | S3Client;
   upload: () => void;
   fetch: () => void | Promise<RemoteStore>;
   sync: () => void;
@@ -34,9 +41,11 @@ export const createApi = ({ store }: Context): AwsService => ({
     }
 
     if (!this.client) {
-      this.client = new AWS.S3({
-        accessKeyId: store.state.aws.accessKey,
-        secretAccessKey: store.state.aws.secretKey,
+      this.client = new S3Client({
+        credentials: {
+          accessKeyId: store.state.aws.accessKey,
+          secretAccessKey: store.state.aws.secretKey,
+        },
         apiVersion: '2006-03-01',
         region: 'eu-west-2',
       });
@@ -74,7 +83,7 @@ export const createApi = ({ store }: Context): AwsService => ({
         CacheControl: 'max-age=60',
       };
 
-      await client.putObject(params).promise();
+      await client.send(new PutObjectCommand(params));
     } catch (e) {
       throw new Error(`Could not upload file to S3: ${e.message}`);
     }
@@ -98,13 +107,15 @@ export const createApi = ({ store }: Context): AwsService => ({
         Key: BUCKET_OBJECT_KEY,
       };
 
-      const data = await client.getObject(params).promise();
+      // Create the presigned URL.
+      const signedUrl = await getSignedUrl(
+        client,
+        new GetObjectCommand(params),
+        { expiresIn: 3600 },
+      );
 
-      if (data.Body) {
-        return JSON.parse(data.Body.toString());
-      }
-
-      throw new Error('Apparently the Body is empty 🤔');
+      const response = await fetch(signedUrl);
+      return await response.json();
     } catch (e) {
       throw new Error(`Could not retrieve file from S3: ${e.message}`);
     }
@@ -119,10 +130,10 @@ export const createApi = ({ store }: Context): AwsService => ({
     const remoteStore = await this.fetch();
 
     if (remoteStore) {
-      store.dispatch('logs/setEntries', remoteStore.logs.entries, {
+      await store.dispatch('logs/setEntries', remoteStore.logs.entries, {
         root: true,
       });
-      store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes, {
+      await store.dispatch('cookbook/setDishes', remoteStore.cookbook.dishes, {
         root: true,
       });
     }
